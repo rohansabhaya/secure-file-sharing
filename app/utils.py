@@ -1,7 +1,7 @@
 import hmac
 import hashlib
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 
 # --- Constants ---
@@ -10,16 +10,15 @@ SECRET_KEY = "challenge-super-secret-key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
-# --- 1. Identity Management (JWT) ---
-# This proves "I am Rohan"
+# --- Identity Management (JWT) ---
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     """Generates a JWT for user authentication."""
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc)+ expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -36,8 +35,7 @@ def decode_access_token(token: str):
     except JWTError:
         return None
 
-# --- 2. File Access Management (HMAC) ---
-# This proves "I am allowed to download this specific file"
+# --- File Access Management (HMAC) ---
 
 def generate_signed_url(file_id: str, ttl: int):
     """

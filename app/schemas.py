@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List, Optional
 
 # --- Constants for Validation Consistency ---
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
 ALLOWED_EXTENSIONS = {".pdf", ".jpg", ".jpeg", ".png", ".txt", ".docx"}
 
 class FileUploadResponse(BaseModel):
