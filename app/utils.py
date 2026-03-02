@@ -4,11 +4,15 @@ import time
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 
+import os
+
 # --- Constants ---
-# In production, these would be loaded from environment variables (os.getenv)
-SECRET_KEY = "challenge-super-secret-key"
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-insecure-key")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("TOKEN_EXPIRE_MINUTES", 60))
+
+# --- Storage Path ---
+UPLOAD_DIR = os.getenv("UPLOAD_DIR", "/workspaces/app/uploads")
 
 # --- Identity Management (JWT) ---
 
