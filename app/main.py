@@ -1,4 +1,5 @@
 import os
+from time import time
 import uuid
 import shutil
 import hashlib
@@ -202,3 +203,9 @@ async def download_file(file_id: str, expires: int, signature: str):
 async def list_my_files(username: str = Depends(get_current_user)):
     rows = get_user_files(username)
     return [dict(row) for row in rows]
+
+
+@app.get("/health")
+async def health_check():
+    """Critical for DigitalOcean App Platform Liveness Probes."""
+    return {"status": "healthy", "timestamp": time.time()}
